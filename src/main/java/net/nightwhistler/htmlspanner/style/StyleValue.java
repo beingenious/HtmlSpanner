@@ -31,7 +31,6 @@ public class StyleValue {
                 final Integer intValue = Integer.parseInt( value.substring(0, value.length() -2) );
                 return new StyleValue(intValue);
             } catch (NumberFormatException nfe ) {
-                Log.e("StyleValue", "Can't parse value: " + value );
                 return null;
             }
         }
@@ -42,21 +41,18 @@ public class StyleValue {
                 final Float floatValue = Float.parseFloat(value.substring(0, value.length() - 2));
                 return new StyleValue(floatValue, Unit.PS);
             } catch (NumberFormatException nfe ) {
-                Log.e("StyleValue", "Can't parse value: " + value );
                 return null;
             }
         }
 
 
         if ( value.endsWith("%") ) {
-            Log.d("StyleValue", "translating percentage " + value );
             try {
                 final float percentage = Float.parseFloat( value.substring(0, value.length() -1 ) );
                 final float floatValue = Math.round(percentage) / 100f;
 
                 return new StyleValue(floatValue, Unit.PERCENTAGE);
             } catch ( NumberFormatException nfe ) {
-                Log.e("StyleValue", "Can't parse value: " + value );
                 return null;
             }
         }
@@ -66,7 +62,6 @@ public class StyleValue {
                 final Float number = Float.parseFloat(value.substring(0, value.length() - 2));
                 return new StyleValue(number, Unit.EM);
             } catch ( NumberFormatException nfe ) {
-                Log.e("CSSCompiler", "Can't parse value: " + value );
                 return null;
             }
         }
