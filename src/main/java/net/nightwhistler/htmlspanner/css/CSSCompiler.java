@@ -1,7 +1,6 @@
 package net.nightwhistler.htmlspanner.css;
 
 import android.graphics.Color;
-import android.util.Log;
 import com.osbcp.cssparser.PropertyValue;
 import com.osbcp.cssparser.Rule;
 import com.osbcp.cssparser.Selector;
@@ -35,8 +34,6 @@ public class CSSCompiler {
 
     public static CompiledRule compile( Rule rule, HtmlSpanner spanner ) {
 
-        Log.d("CSSCompiler", "Compiling rule " + rule );
-
         List<List<TagNodeMatcher>> matchers = new ArrayList<List<TagNodeMatcher>>();
         List<StyleUpdater> styleUpdaters = new ArrayList<StyleUpdater>();
 
@@ -56,8 +53,6 @@ public class CSSCompiler {
                 blank = updater.updateStyle(blank, spanner);
             }
         }
-
-        Log.d("CSSCompiler", "Compiled rule: " + blank );
 
         String asText = rule.toString();
 
@@ -184,12 +179,10 @@ public class CSSCompiler {
                 return new StyleUpdater() {
                     @Override
                     public Style updateStyle(Style style, HtmlSpanner spanner) {
-                        Log.d("CSSCompiler", "Applying style " + key + ": " + value );
                         return style.setColor(color);
                     }
                 };
             } catch ( IllegalArgumentException ia ) {
-                Log.e("CSSCompiler", "Can't parse colour definition: " + value);
                 return null;
             }
         }
@@ -200,12 +193,10 @@ public class CSSCompiler {
                 return new StyleUpdater() {
                     @Override
                     public Style updateStyle(Style style, HtmlSpanner spanner) {
-                        Log.d("CSSCompiler", "Applying style " + key + ": " + value );
                         return style.setBackgroundColor(color);
                     }
                 };
             } catch ( IllegalArgumentException ia ) {
-                Log.e("CSSCompiler", "Can't parse colour definition: " + value);
                 return null;
             }
         }
@@ -216,13 +207,11 @@ public class CSSCompiler {
                 return new StyleUpdater() {
                     @Override
                     public Style updateStyle(Style style, HtmlSpanner spanner) {
-                        Log.d("CSSCompiler", "Applying style " + key + ": " + value );
                         return style.setTextAlignment(alignment);
                     }
                 };
 
             } catch ( IllegalArgumentException i ) {
-                Log.e("CSSCompiler", "Can't parse alignment: " + value);
                 return null;
             }
         }
@@ -235,13 +224,11 @@ public class CSSCompiler {
                 return new StyleUpdater() {
                     @Override
                     public Style updateStyle(Style style, HtmlSpanner spanner) {
-                        Log.d("CSSCompiler", "Applying style " + key + ": " + value );
                         return style.setFontWeight(weight);
                     }
                 };
 
             } catch ( IllegalArgumentException i ) {
-                Log.e("CSSCompiler", "Can't parse font-weight: " + value);
                 return null;
             }
         }
@@ -252,13 +239,11 @@ public class CSSCompiler {
                 return new StyleUpdater() {
                     @Override
                     public Style updateStyle(Style style, HtmlSpanner spanner) {
-                        Log.d("CSSCompiler", "Applying style " + key + ": " + value );
                         return style.setFontStyle(fontStyle);
                     }
                 };
             }
             catch ( IllegalArgumentException i ) {
-                Log.e("CSSCompiler", "Can't parse font-style: " + value);
                 return null;
             }
         }
@@ -267,11 +252,8 @@ public class CSSCompiler {
             return new StyleUpdater() {
                 @Override
                 public Style updateStyle(Style style, HtmlSpanner spanner) {
-                    Log.d("CSSCompiler", "Applying style " + key + ": " + value );
 
                     FontFamily family = spanner.getFont( value );
-
-                    Log.d("CSSCompiler", "Got font " + family );
 
                     return style.setFontFamily(family);
                 }
@@ -288,7 +270,6 @@ public class CSSCompiler {
                 return new StyleUpdater() {
                     @Override
                     public Style updateStyle(Style style, HtmlSpanner spanner) {
-                        Log.d("CSSCompiler", "Applying style " + key + ": " + value );
                         return style.setFontSize(styleValue);
                     }
                 };
@@ -301,12 +282,10 @@ public class CSSCompiler {
                     return new StyleUpdater() {
                         @Override
                         public Style updateStyle(Style style, HtmlSpanner spanner) {
-                            Log.d("CSSCompiler", "Applying style " + key + ": " + value );
                             return style.setFontSize(new StyleValue(number, StyleValue.Unit.EM));
                         }
                     };
                 } catch ( NumberFormatException nfe ) {
-                    Log.e("CSSCompiler", "Can't parse font-size: " + value );
                     return null;
                 }
             }
@@ -395,7 +374,6 @@ public class CSSCompiler {
                     }
                 };
             } catch (IllegalArgumentException ia) {
-                Log.e("CSSCompiler", "Can't parse display-value: " + value );
                 return null;
             }
         }
@@ -406,11 +384,10 @@ public class CSSCompiler {
                 return new StyleUpdater() {
                     @Override
                     public Style updateStyle(Style style, HtmlSpanner spanner) {
-                        return style.setBorderStyle( borderStyle );
+                        return style.setBorderStyle(borderStyle);
                     }
                 };
             } catch (IllegalArgumentException ia) {
-                Log.e("CSSCompiler", "Could not parse border-style " + value );
                 return null;
             }
         }
@@ -421,11 +398,10 @@ public class CSSCompiler {
                 return new StyleUpdater() {
                     @Override
                     public Style updateStyle(Style style, HtmlSpanner spanner) {
-                        return style.setBorderColor( borderColor );
+                        return style.setBorderColor(borderColor);
                     }
                 };
             } catch (IllegalArgumentException ia) {
-                Log.e("CSSCompiler", "Could not parse border-color " + value );
                 return null;
             }
         }
@@ -441,7 +417,21 @@ public class CSSCompiler {
                     }
                 };
             } else {
-                Log.e("CSSCompiler", "Could not parse border-color " + value );
+                return null;
+            }
+        }
+
+        if ( "line-height".equals( key ) ) {
+
+            final StyleValue lineHeight = StyleValue.parse(value);
+            if ( lineHeight != null ) {
+                return new StyleUpdater() {
+                    @Override
+                    public Style updateStyle(Style style, HtmlSpanner spanner) {
+                        return style.setLineHeight(lineHeight);
+                    }
+                };
+            } else {
                 return null;
             }
         }
@@ -451,7 +441,6 @@ public class CSSCompiler {
            return parseBorder( value );
         }
 
-        Log.d("CSSCompiler", "Don't understand CSS property '" + key + "'. Ignoring it.");
         return null;
     }
 
@@ -495,14 +484,11 @@ public class CSSCompiler {
 
         for ( String part: parts ) {
 
-            Log.d("CSSParser", "Trying to parse " + part );
-
             if ( borderWidth == null ) {
 
                 borderWidth = StyleValue.parse( part );
 
                 if ( borderWidth != null ) {
-                    Log.d("CSSParser", "Parsed " + part + " as border-width");
                     continue;
                 }
             }
@@ -510,7 +496,6 @@ public class CSSCompiler {
             if ( borderColor == null ) {
                 try {
                     borderColor = parseCSSColor(part);
-                    Log.d("CSSParser", "Parsed " + part + " as border-color");
                     continue;
                 } catch ( IllegalArgumentException ia ) {
                     //try next one
@@ -520,14 +505,12 @@ public class CSSCompiler {
             if ( borderStyle == null ) {
                 try {
                     borderStyle = Style.BorderStyle.valueOf(part.toUpperCase());
-                    Log.d("CSSParser", "Parsed " + part + " as border-style");
                     continue;
                 } catch ( IllegalArgumentException ia ) {
                     //next loop iteration
                 }
             }
 
-            Log.d("CSSParser", "Could not make sense of border-spec " + part );
         }
 
         final StyleValue finalBorderWidth = borderWidth;

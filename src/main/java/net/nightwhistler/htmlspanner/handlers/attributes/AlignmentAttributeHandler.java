@@ -39,7 +39,13 @@ public class AlignmentAttributeHandler extends WrappingStyleHandler {
 	@Override
 	public void handleTagNode(TagNode node, SpannableStringBuilder builder,
 			int start, int end, Style style, SpanStack spanStack) {
-		
+
+		String textAlign = node.getAttributeByName("textAlign");
+
+		if (textAlign != null) {
+			node.setAttribute("align", textAlign);
+		}
+
 		String align = node.getAttributeByName("align");
 
 		if ( "right".equalsIgnoreCase(align) ) {

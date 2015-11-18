@@ -8,6 +8,8 @@ import net.nightwhistler.htmlspanner.spans.*;
 import net.nightwhistler.htmlspanner.style.Style;
 import net.nightwhistler.htmlspanner.style.StyleCallback;
 import net.nightwhistler.htmlspanner.style.StyleValue;
+
+import org.htmlcleaner.ContentNode;
 import org.htmlcleaner.TagNode;
 
 /**
@@ -40,6 +42,16 @@ public class StyledTextHandler extends TagNodeHandler {
 
             if ( builder.charAt(builder.length() -1) != '\n' ) {
                 builder.append('\n');
+                float lineHeight = 1.20f;
+                if (useStyle.getLineHeight() != null) {
+                    StyleValue styleValue = useStyle.getLineHeight();
+                    if ( styleValue.getUnit() == StyleValue.Unit.PERCENTAGE ) {
+                        if (styleValue.getFloatValue() > 0f) {
+                            lineHeight = styleValue.getFloatValue();
+                        }
+                    }
+                }
+                spanStack.pushSpan(new VerticalMarginSpan(lineHeight * (1.0f / 1.2f)), builder.length() - 1, builder.length());
             }
         }
 
@@ -57,7 +69,7 @@ public class StyledTextHandler extends TagNodeHandler {
                     }
                 }
             } else {
-                if ( styleValue.getFloatValue() > 0f ) {
+                if (styleValue.getFloatValue() > 0f ) {
                     if ( appendNewLine(builder) ) {
                         spanStack.pushSpan( new VerticalMarginSpan( styleValue.getFloatValue() ),
                             builder.length() -1, builder.length() );
@@ -66,7 +78,6 @@ public class StyledTextHandler extends TagNodeHandler {
             }
 
         }
-
 
     }
 
@@ -79,7 +90,19 @@ public class StyledTextHandler extends TagNodeHandler {
     public void handleTagNode(TagNode node, SpannableStringBuilder builder, int start, int end, Style useStyle, SpanStack stack ) {
 
         if ( useStyle.getDisplayStyle() == Style.DisplayStyle.BLOCK ) {
-            appendNewLine(builder);
+            boolean isNewLine = appendNewLine(builder);
+            float lineHeight = 1.20f;
+            if (isNewLine) {
+                if (useStyle.getLineHeight() != null) {
+                    StyleValue styleValue = useStyle.getLineHeight();
+                    if (styleValue.getUnit() == StyleValue.Unit.PERCENTAGE) {
+                        if (styleValue.getFloatValue() > 0f) {
+                            lineHeight = styleValue.getFloatValue();
+                        }
+                    }
+                }
+            }
+            stack.pushSpan(new VerticalMarginSpan(lineHeight * (1.0f / 1.2f)), builder.length() - 1, builder.length());
 
             //If we have a bottom margin, we insert an extra newline. We'll manipulate the line height
             //of this newline to create the margin.
@@ -104,12 +127,9 @@ public class StyledTextHandler extends TagNodeHandler {
 
             }
         }
-
-        if ( builder.length() > start ) {
+        if ( builder.length() > start) {
             stack.pushSpan(new StyleCallback(getSpanner().getFontResolver()
                 .getDefaultFont(), useStyle, start, builder.length() ));
-        } else {
-            Log.d( "StyledTextHandler", "Refusing to push span of length " + ( builder.length() - start ));
         }
     }
 

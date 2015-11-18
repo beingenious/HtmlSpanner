@@ -33,6 +33,8 @@ public class Style {
     private final BorderStyle borderStyle;
     private final StyleValue borderWidth;
 
+    private final StyleValue lineHeight;
+
     private final StyleValue textIndent;
 
     private final StyleValue marginTop;
@@ -59,6 +61,8 @@ public class Style {
         borderColor = null;
         borderStyle = null;
         borderWidth = null;
+
+        lineHeight = null;
     }
 
     public Style(FontFamily family, TextAlignment textAlignment, StyleValue fontSize,
@@ -66,7 +70,7 @@ public class Style {
                  Integer backgroundColor, DisplayStyle displayStyle, StyleValue marginTop,
                  StyleValue marginBottom, StyleValue marginLeft, StyleValue marginRight,
                  StyleValue textIndent, Integer borderColor, BorderStyle borderStyle,
-                 StyleValue borderWidth) {
+                 StyleValue borderWidth, StyleValue lineHeight) {
         this.fontFamily = family;
         this.textAlignment = textAlignment;
         this.fontSize = fontSize;
@@ -85,13 +89,15 @@ public class Style {
         this.borderColor = borderColor;
         this.borderWidth = borderWidth;
         this.borderStyle = borderStyle;
+
+        this.lineHeight = lineHeight;
     }
 
     public Style setFontFamily(FontFamily fontFamily) {
         return new Style(fontFamily, this.textAlignment, this.fontSize,
                 this.fontWeight, this.fontStyle, this.color, this.backgroundColor, this.displayStyle,
                 this.marginTop, this.marginBottom, this.marginLeft, this.marginRight, this.textIndent,
-                this.borderColor, this.borderStyle, this.borderWidth );
+                this.borderColor, this.borderStyle, this.borderWidth, this.lineHeight);
     }
 
 
@@ -99,105 +105,112 @@ public class Style {
         return new Style(this.fontFamily, alignment, this.fontSize, this.fontWeight,
                 this.fontStyle, this.color, this.backgroundColor, this.displayStyle,
                 this.marginTop, this.marginBottom, this.marginLeft, this.marginRight, this.textIndent,
-                this.borderColor, this.borderStyle, this.borderWidth );
+                this.borderColor, this.borderStyle, this.borderWidth, this.lineHeight);
     }
 
     public Style setFontSize(StyleValue fontSize) {
         return new Style(this.fontFamily, this.textAlignment, fontSize, this.fontWeight,
                 this.fontStyle, this.color, this.backgroundColor, this.displayStyle,
                 this.marginTop, this.marginBottom, this.marginLeft, this.marginRight, this.textIndent,
-                this.borderColor, this.borderStyle, this.borderWidth );
+                this.borderColor, this.borderStyle, this.borderWidth, this.lineHeight);
     }
 
     public Style setFontWeight(FontWeight fontWeight) {
         return new Style(fontFamily, this.textAlignment, this.fontSize, fontWeight,
                 this.fontStyle, this.color, this.backgroundColor, this.displayStyle,
                 this.marginTop, this.marginBottom, this.marginLeft, this.marginRight, this.textIndent,
-                this.borderColor, this.borderStyle, this.borderWidth );
+                this.borderColor, this.borderStyle, this.borderWidth, this.lineHeight);
     }
 
     public Style setFontStyle(FontStyle fontStyle) {
         return new Style(fontFamily, this.textAlignment, this.fontSize,
                 this.fontWeight, fontStyle, this.color, this.backgroundColor,
                 this.displayStyle, this.marginTop, this.marginBottom, this.marginLeft, this.marginRight,
-                this.textIndent, this.borderColor, this.borderStyle, this.borderWidth );
+                this.textIndent, this.borderColor, this.borderStyle, this.borderWidth, this.lineHeight);
     }
 
     public Style setColor(Integer color) {
         return new Style(fontFamily, this.textAlignment, this.fontSize,
                 this.fontWeight, fontStyle, color, this.backgroundColor,
                 this.displayStyle, this.marginTop, this.marginBottom, this.marginLeft, this.marginRight,
-                this.textIndent, this.borderColor, this.borderStyle, this.borderWidth );
+                this.textIndent, this.borderColor, this.borderStyle, this.borderWidth, this.lineHeight);
     }
 
     public Style setBackgroundColor( Integer bgColor ) {
         return new Style(fontFamily, this.textAlignment, this.fontSize,
                 this.fontWeight, fontStyle, this.color, bgColor,
                 this.displayStyle, this.marginTop, this.marginBottom, this.marginLeft, this.marginRight,
-                this.textIndent, this.borderColor, this.borderStyle, this.borderWidth );
+                this.textIndent, this.borderColor, this.borderStyle, this.borderWidth, this.lineHeight);
     }
 
     public Style setDisplayStyle( DisplayStyle displayStyle ) {
         return new Style(fontFamily, this.textAlignment, this.fontSize,
                 this.fontWeight, fontStyle, this.color, this.backgroundColor,
                 displayStyle, this.marginTop, this.marginBottom, this.marginLeft, this.marginRight,
-                this.textIndent, this.borderColor, this.borderStyle, this.borderWidth );
+                this.textIndent, this.borderColor, this.borderStyle, this.borderWidth, this.lineHeight);
     }
 
     public Style setMarginBottom( StyleValue marginBottom ) {
         return new Style(fontFamily, this.textAlignment, this.fontSize,
                 this.fontWeight, fontStyle, this.color, this.backgroundColor,
                 this.displayStyle, this.marginTop, marginBottom, this.marginLeft,
-                this.marginRight,this.textIndent, this.borderColor, this.borderStyle, this.borderWidth );
+                this.marginRight,this.textIndent, this.borderColor, this.borderStyle, this.borderWidth, this.lineHeight);
     }
 
     public Style setMarginTop( StyleValue marginTop ) {
         return new Style(fontFamily, this.textAlignment, this.fontSize,
                 this.fontWeight, fontStyle, this.color, this.backgroundColor,
                 this.displayStyle, marginTop, this.marginBottom, this.marginLeft,
-                this.marginRight,this.textIndent, this.borderColor, this.borderStyle, this.borderWidth );
+                this.marginRight,this.textIndent, this.borderColor, this.borderStyle, this.borderWidth, this.lineHeight);
     }
 
     public Style setMarginLeft( StyleValue marginLeft ) {
         return new Style(fontFamily, this.textAlignment, this.fontSize,
                 this.fontWeight, fontStyle, this.color, this.backgroundColor,
                 this.displayStyle, this.marginTop, this.marginBottom, marginLeft,
-                this.marginRight,this.textIndent, this.borderColor, this.borderStyle, this.borderWidth );
+                this.marginRight,this.textIndent, this.borderColor, this.borderStyle, this.borderWidth, this.lineHeight);
     }
 
     public Style setMarginRight( StyleValue marginRight ) {
         return new Style(fontFamily, this.textAlignment, this.fontSize,
                 this.fontWeight, fontStyle, this.color, this.backgroundColor,
                 this.displayStyle, this.marginTop, this.marginBottom, this.marginLeft,
-                marginRight,this.textIndent, this.borderColor, this.borderStyle, this.borderWidth );
+                marginRight,this.textIndent, this.borderColor, this.borderStyle, this.borderWidth, this.lineHeight);
     }
 
     public Style setTextIndent( StyleValue textIndent ) {
         return new Style(fontFamily, this.textAlignment, this.fontSize,
                 this.fontWeight, fontStyle, this.color, this.backgroundColor,
                 this.displayStyle, this.marginTop, this.marginBottom, this.marginLeft, this.marginRight,
-                textIndent, this.borderColor, this.borderStyle, this.borderWidth );
+                textIndent, this.borderColor, this.borderStyle, this.borderWidth, this.lineHeight);
     }
 
     public Style setBorderStyle( BorderStyle borderStyle ) {
         return new Style(fontFamily, this.textAlignment, this.fontSize,
                 this.fontWeight, fontStyle, this.color, this.backgroundColor,
                 this.displayStyle, this.marginTop, this.marginBottom, this.marginLeft, this.marginRight,
-                textIndent, this.borderColor, borderStyle, this.borderWidth );
+                textIndent, this.borderColor, borderStyle, this.borderWidth, this.lineHeight);
     }
 
     public Style setBorderColor( Integer borderColor ) {
         return new Style(fontFamily, this.textAlignment, this.fontSize,
                 this.fontWeight, fontStyle, this.color, this.backgroundColor,
                 this.displayStyle, this.marginTop, this.marginBottom, this.marginLeft, this.marginRight,
-                textIndent, borderColor, borderStyle, this.borderWidth );
+                textIndent, borderColor, borderStyle, this.borderWidth, this.lineHeight);
     }
 
     public Style setBorderWidth( StyleValue borderWidth ) {
         return new Style(fontFamily, this.textAlignment, this.fontSize,
                 this.fontWeight, fontStyle, this.color, this.backgroundColor,
                 this.displayStyle, this.marginTop, this.marginBottom, this.marginLeft, this.marginRight,
-                textIndent, this.borderColor, this.borderStyle, borderWidth );
+                textIndent, this.borderColor, this.borderStyle, borderWidth, this.lineHeight);
+    }
+
+    public Style setLineHeight( StyleValue lineHeight ) {
+        return new Style(fontFamily, this.textAlignment, this.fontSize,
+                this.fontWeight, fontStyle, this.color, this.backgroundColor,
+                this.displayStyle, this.marginTop, this.marginBottom, this.marginLeft, this.marginRight,
+                textIndent, this.borderColor, this.borderStyle, this.borderWidth, lineHeight);
     }
 
     public Integer getBackgroundColor() {
@@ -262,6 +275,10 @@ public class Style {
 
     public StyleValue getBorderWidth() {
         return this.borderWidth;
+    }
+
+    public StyleValue getLineHeight() {
+        return this.lineHeight;
     }
 
     public String toString() {
@@ -330,6 +347,10 @@ public class Style {
 
         if ( borderWidth != null ) {
             result.append("  border-style: " + borderWidth + "\n" );
+        }
+
+        if ( lineHeight != null ) {
+            result.append("  line-height: " + lineHeight + "\n" );
         }
 
         result.append("}\n");

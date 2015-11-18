@@ -12,7 +12,7 @@ import net.nightwhistler.htmlspanner.HtmlSpanner;
  */
 public class StyleValue {
 
-    public static enum Unit { PX, EM, PERCENTAGE };
+    public static enum Unit { PX, EM, PERCENTAGE, PS };
 
     private Integer intValue;
     private Float floatValue;
@@ -36,15 +36,27 @@ public class StyleValue {
             }
         }
 
+        if ( value.endsWith("ps") ) {
+
+            try {
+                final Float floatValue = Float.parseFloat(value.substring(0, value.length() - 2));
+                return new StyleValue(floatValue, Unit.PS);
+            } catch (NumberFormatException nfe ) {
+                Log.e("StyleValue", "Can't parse value: " + value );
+                return null;
+            }
+        }
+
+
         if ( value.endsWith("%") ) {
             Log.d("StyleValue", "translating percentage " + value );
             try {
-                final int percentage = Integer.parseInt( value.substring(0, value.length() -1 ) );
-                final float floatValue = percentage / 100f;
+                final float percentage = Float.parseFloat( value.substring(0, value.length() -1 ) );
+                final float floatValue = Math.round(percentage) / 100f;
 
                 return new StyleValue(floatValue, Unit.PERCENTAGE);
             } catch ( NumberFormatException nfe ) {
-                Log.e("StyleValue", "Can't parse font-size: " + value );
+                Log.e("StyleValue", "Can't parse value: " + value );
                 return null;
             }
         }
